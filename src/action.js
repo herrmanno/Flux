@@ -3,15 +3,19 @@
 	var Actions = function() {
 		var self = this;
 
-		self.loaded = new Promise();
+		this.load = function() {
+			var p = new Promise('actions-load');
 
-		AJAX.GET_JSON(API.CONFIG.urls.actions)
-		.then(function(actions) {
-			actions.forEach(function(name) {
-				self[name] = self.createAction(name);
+			AJAX.GET_JSON(API.CONFIG.urls.actions)
+			.then(function(actions) {
+				actions.forEach(function(name) {
+					self[name] = self.createAction(name);
+				});
+				p.resolve();
 			});
-			self.loaded.resolve();
-		});
+
+			return p;
+		};
 
 	};
 

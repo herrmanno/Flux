@@ -29,13 +29,12 @@ app.route('/model/:name')
 
 	});
 
-app.use(function(req, res, next) {
-	res.contentType(req.path.substr(1));
-	console.log("set content-type for file " + req.path);
-	next();
-});
+app.use(express.static('public'));
 
-app.use(express.static('.'));
+app.use(function(req, res, next) {
+	res.contentType('text/html');
+	res.sendFile(__dirname + '/public/html/index.html');
+});
 
 
 app.listen(3000, function () {});

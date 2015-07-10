@@ -14,7 +14,7 @@
 		init: function() {
 			var p = new Promise('bootstrap-state');
 
-			Promise.all([API.ACTIONS.loaded, API.STORES.loaded])
+			Promise.all([API.ACTIONS.load(), API.STORES.load()])
 			.then(function() {
 				API.ACTIONS.STATE = function(state, args) {
 					API.DISPATCHER.dispatch({

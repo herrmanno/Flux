@@ -286,15 +286,19 @@
 	var Actions = function() {
 		var self = this;
 
-		self.loaded = new Promise();
+		this.load = function() {
+			var p = new Promise('actions-load');
 
-		AJAX.GET_JSON(API.CONFIG.urls.actions)
-		.then(function(actions) {
-			actions.forEach(function(name) {
-				self[name] = self.createAction(name);
+			AJAX.GET_JSON(API.CONFIG.urls.actions)
+			.then(function(actions) {
+				actions.forEach(function(name) {
+					self[name] = self.createAction(name);
+				});
+				p.resolve();
 			});
-			self.loaded.resolve();
-		});
+
+			return p;
+		};
 
 	};
 
@@ -481,15 +485,19 @@
 (function() {
 
 	var Stores = {
-		loaded: new Promise()
+
+		load: function() {
+			var p = new Promise('stores-load');
+
+			AJAX.GET_JSON(API.CONFIG.urls.stores)
+			.then(function(stores) {
+				Promise.all(stores.map(Store.loadStore))
+				.then(p.resolve);
+			});
+
+			return p;
+		}
 	};
-
-
-	AJAX.GET_JSON(API.CONFIG.urls.stores)
-	.then(function(stores) {
-		Promise.all(stores.map(Store.loadStore))
-		.then(Stores.loaded.resolve);
-	});
 
 	window.STORES = API.STORES = Stores;
 })();
@@ -510,7 +518,7 @@
 		init: function() {
 			var p = new Promise('bootstrap-state');
 
-			Promise.all([API.ACTIONS.loaded, API.STORES.loaded])
+			Promise.all([API.ACTIONS.load(), API.STORES.load()])
 			.then(function() {
 				API.ACTIONS.STATE = function(state, args) {
 					API.DISPATCHER.dispatch({
