@@ -1,0 +1,15 @@
+[
+	{
+		"name": "home",
+		"url": "home",
+		"views": [
+			{"name": "view1", "html": "home.html"}
+		]
+	},
+
+	{
+		"name": "CATCH_ALL",
+		"redirect": "home",
+		"url": ".*"
+	}
+]
