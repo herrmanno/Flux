@@ -245,10 +245,6 @@
 			return root;
 		}
 
-		function render(root, model) {
-			return root;
-		}
-
 		function domToString(root, indent) {
 			indent = indent || 0;
 			var html = '';
@@ -343,13 +339,13 @@
 
 		return {
 			'render': function(component) {
+				if(typeof component.html === 'boolean' && !component.html)
+					return;
+
 				var html = component.html;
 
 				var root = parse(html).root;
 				root = renderRepeat(root, component);
-				root = render(root);
-
-				//TODO handle original innerHTML
 
 				html = domToString(root, -1);
 
@@ -498,10 +494,15 @@
 
 		this.properties.forEach(this.grabProperty.bind(this));
 
+		var inited;
 		if(this.init)
-			this.init.call(this);
+			inited = this.init.call(this);
 
-		Promise.all(this.requires.map(this.checkRequirement.bind(this)))
+		var wait = this.requires.map(this.checkRequirement.bind(this));
+		if(inited instanceof Promise)
+			wait.push(inited);
+
+		Promise.all(wait)
 		.then(this.render.bind(this))
 		.catch(function(err) {
 			throw err;

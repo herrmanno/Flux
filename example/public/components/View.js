@@ -11,22 +11,41 @@ CFW.register({
 	init: function() {
 		this.storeid = STORES.STATE.register(this.state_changed);
 
-		var s = STORES.STATE;
-		var n = this.viewid;
-		var self = this;
+		this.sethtml();
 
-		if(s.state) {
-			var v = s.state.views.filter(function(v) {return v.name == n;})[0];
-			AJAX.GET(v.html)
-			.then(function(html) {
-				self.element.innerHTML = html;
-			})
-		}
 	},
 
 	state_changed: function(state) {
-		alert(state);
+		this.sethtml();
 	},
+
+	sethtml: function() {
+		var s = STORES.STATE;
+		var n = this.viewid;
+
+		if(s.state) {
+
+			var v = s.state.views.filter(function(v) {return v.name == n;})[0];
+
+			if(v) {
+				//html needs to be loaded
+				if(v.html.endsWith('.html')) {
+					AJAX.GET(v.html)
+					.then(function(html) {
+						this.element.innerHTML = html;
+					}.bind(this));
+				//v.html is actual html code
+				} else {
+					this.element.innerHTML = v.html;
+				}
+
+			//current state does not support this view
+			} else {
+				this.element.innerHTML = null;
+			}
+
+		}
+	}
 
 
 });

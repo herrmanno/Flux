@@ -6,7 +6,7 @@ var model = {};
 
 app.use(bodyParser());
 
-app.route('/model/:name')
+app.route('/model/:name/:id?')
 	.get(function(req, res, next) {
 		var m = model[req.params.name] || [];
 		res.json(m);

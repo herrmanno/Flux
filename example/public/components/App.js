@@ -6,6 +6,6 @@ CFW.register({
 
 	properties: [],
 
-	html: '<View viewid="view1"/>',
+	html: '<View viewid="view1"/><View viewid="view2"/>',
 
 });

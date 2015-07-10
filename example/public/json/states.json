@@ -1,15 +1,15 @@
 [
 	{
-		"name": "home",
-		"url": "home",
+		"name": "USERS",
+		"url": "users",
 		"views": [
-			{"name": "view1", "html": "html/home.html"}
+			{"name": "view1", "html": "<UserList/>"}
 		]
 	},
 
 	{
 		"name": "CATCH_ALL",
-		"redirect": "home",
+		"redirect": "USERS",
 		"url": ".*"
 	}
 ]
