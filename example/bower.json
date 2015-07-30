@@ -1,28 +1,28 @@
 {
-  "name": "Flux",
+  "name": "Flux-example",
   "version": "0.0.1",
   "homepage": "https://github.com/herrmanno/Flux",
   "authors": [
     "OHerrmann92 <O.herrmann92@gmail.com>"
   ],
   "description": "JS-Framework for Flux architecture",
-  "main": "src/main.js",
+  "main": "index.html",
   "keywords": [
     "flux",
     "js",
-    "javascript"
+    "javascript",
+	"example"
   ],
   "license": "MIT",
   "ignore": [
     "**/.*",
     "example",
-    "wrap.js",
     "node_modules",
     "bower_components",
     "test",
     "tests"
   ],
   "dependencies": {
-    "ho-promise": "*",    
+	"ho-components": "*"
   }
 }

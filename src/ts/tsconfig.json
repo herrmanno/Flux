@@ -1,0 +1,34 @@
+{
+    "version": "1.5.0-beta",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "outDir": "../js",
+        "declaration": true,
+        "noEmitOnError": false,
+        "isolatedModules": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noImplicitAny": false,
+        "removeComments": false,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "./**/*.tsx",
+        "!./node_modules/**/*"
+    ],
+    "files": [
+        "./callbackholder.ts",
+        "./dispatcher.ts",
+        "./flux.ts",
+        "./router.ts",
+        "./state.ts",
+        "./stateprovider.ts",
+        "./store.ts",
+        "./storeprovider.ts",
+        "./storeregistry.ts"
+    ]
+}

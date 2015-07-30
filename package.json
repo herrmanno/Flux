@@ -1,16 +1,30 @@
 {
-  "name": "flux-build",
-  "version": "1.0.0",
-  "description": "build project for building flux.js",
-  "main": "gulpfile.js",
-  "devDependencies": {
-    "gulp-rename": "^1.2.2",
-    "del": "^1.2.0",
-    "gulp-concat": "^2.6.0",
-    "gulp": "^3.9.0",
-    "gulp-uglify": "^1.2.0",
-    "gulp-wrap": "^0.11.0"
+  "name": "flux",
+  "version": "0.0.1",
+  "description": "### TODO",
+  "main": "dist/flux.js",
+  "directories": {
+    "example": "example"
   },
-  "author": "Oliver Herrmann",
-  "license": "ISC"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/herrmanno/components.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/herrmanno/components/issues"
+  },
+  "homepage": "https://github.com/herrmanno/components",
+  "dependencies": {
+    "delete": "^0.2.1",
+    "gulp": "^3.9.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-typescript": "^2.8.0",
+    "gulp-uglify": "^1.2.0"
+  }
 }

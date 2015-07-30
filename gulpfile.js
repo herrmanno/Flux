@@ -1,41 +1,52 @@
 var gulp = require('gulp');
-var del = require('del');
-var concat = require('gulp-concat');
-var wrap = require('gulp-wrap');
+var del = require('delete');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var typescript = require('gulp-typescript');
+var sourcemap = require('gulp-sourcemaps');
 
-var src = ['config', 'err', 'ajax', 'util', 'action', 'dispatcher', 'store', 'stores', 'state', 'main'].map(function(f) {return './src/'+f+'.js';});
-src.unshift('./bower_components/ho-promise/promise.js');
 
-var bundle = 'flux.js';
-var bundlemin = bundle.substr(0, bundle.length-2)+'min.js';
+var src = {
+    ts: ['src/ts/**/*.ts'],
+    js: ['src/js/**/*.js']
+};
 
-var dest = './';
-var delFiles = [bundle, bundlemin].map(function(f) {return dest+f;});
+var name = 'ho-flux';
 
-gulp.task('clean', function (cb) {
-  del(delFiles, cb);
+var dist = 'dist';
+
+var entry = 'flux.js';
+
+
+gulp.task('clean', function() {
+    return del.sync(dist+'/d.ts', {force: true}) && del.sync(dist, {force: true});
 });
 
-gulp.task('bundle', ['clean'], function() {
-	return gulp.src(src)
-		.pipe(concat(bundle))
-		.pipe(wrap({ src: 'wrap.js'}))
-		.pipe(gulp.dest(dest));
+gulp.task('package', ['clean'], function() {
+    return gulp.src('src/ts/flux.ts')
+    .pipe(sourcemap.init())
+    .pipe(typescript({
+        out: entry,
+        sourceMap: true
+    }))
+    .pipe(sourcemap.write())
+    .pipe(gulp.dest(dist));
 });
 
-gulp.task('bundle-min', ['bundle'], function() {
-	return gulp.src(bundle)
-		.pipe(uglify())
-		.pipe(rename(bundlemin))
-		.pipe(gulp.dest(dest));
+
+gulp.task('mini', ['package'], function() {
+    return gulp.src(dist + '/' + entry)
+    .pipe(uglify())
+    .pipe(rename({
+        extname: '.min.js'
+    }))
+    .pipe(gulp.dest(dist));
 });
 
-gulp.task('watch', function() {
-  gulp.watch(src, ['bundle-min']);
+gulp.task('def', ['mini'], function() {
+    return gulp.src('src/js/**/*.d.ts')
+    .pipe(gulp.dest(dist + '/d.ts'));
 });
 
-gulp.task('default', ['watch', 'bundle', 'bundle-min'], function() {
-	return void 0;
-});
+
+gulp.task('default', ['def'], null);
