@@ -3,22 +3,32 @@
 
 module ho.flux {
 
-	export class Store extends CallbackHolder {
+	export class Store<T> extends CallbackHolder {
 
-		protected data: any;
+		protected data: T;
 		private id: string;
 		private handlers: {[key: string]: Function} = {};
 
 
 		constructor() {
 			super();
-			this.id = ho.flux.DISPATCHER.register(this.handle);
+			this.id = ho.flux.DISPATCHER.register(this.handle.bind(this));
+			//ho.flux.STORES[this.name] = this;
+			ho.flux.STORES.register(this);
 			this.init();
+		}
+
+		 get name(): string {
+			return this.constructor.toString().match(/\w+/g)[1];
 		}
 
 		protected init(): void {}
 
-		protected on(type: string, func: (data: any)=>any): void {
+		public register(callback: (data:T)=>void, self?:any): string {
+			return super.register(callback, self);
+		}
+
+		protected on(type: string, func: Function): void {
 			this.handlers[type] = func;
 		}
 

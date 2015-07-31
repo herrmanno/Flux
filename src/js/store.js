@@ -14,10 +14,22 @@ var ho;
             function Store() {
                 _super.call(this);
                 this.handlers = {};
-                this.id = ho.flux.DISPATCHER.register(this.handle);
+                this.id = ho.flux.DISPATCHER.register(this.handle.bind(this));
+                //ho.flux.STORES[this.name] = this;
+                ho.flux.STORES.register(this);
                 this.init();
             }
+            Object.defineProperty(Store.prototype, "name", {
+                get: function () {
+                    return this.constructor.toString().match(/\w+/g)[1];
+                },
+                enumerable: true,
+                configurable: true
+            });
             Store.prototype.init = function () { };
+            Store.prototype.register = function (callback, self) {
+                return _super.prototype.register.call(this, callback, self);
+            };
             Store.prototype.on = function (type, func) {
                 this.handlers[type] = func;
             };

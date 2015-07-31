@@ -26,8 +26,7 @@ gulp.task('package', ['clean'], function() {
     return gulp.src('src/ts/flux.ts')
     .pipe(sourcemap.init())
     .pipe(typescript({
-        out: entry,
-        sourceMap: true
+        out: entry
     }))
     .pipe(sourcemap.write())
     .pipe(gulp.dest(dist));
@@ -44,8 +43,11 @@ gulp.task('mini', ['package'], function() {
 });
 
 gulp.task('def', ['mini'], function() {
-    return gulp.src('src/js/**/*.d.ts')
-    .pipe(gulp.dest(dist + '/d.ts'));
+    var ts = gulp.src(src.ts)
+    .pipe(typescript({
+        declarationFiles: true
+    }));
+    return ts.dts.pipe(gulp.dest(dist + '/d.ts'));
 });
 
 

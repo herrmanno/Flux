@@ -2,5 +2,12 @@
 /// <reference path="storeprovider.d.ts" />
 declare module ho.flux {
     import Promise = ho.promise.Promise;
-    function loadStore(name: string): Promise<Store, string>;
+    class Storeregistry {
+        private stores;
+        register(store: Store<any>): void;
+        get<T extends Store<any>>(storeClass: {
+            new (): T;
+        }): T;
+        loadStore(name: string): Promise<typeof Store, string>;
+    }
 }

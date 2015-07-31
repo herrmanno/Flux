@@ -10,13 +10,22 @@ module ho.flux {
 
 	import Promise = ho.promise.Promise;
 
+
+	/** Data that a Router#go takes */
 	export interface IRouteData {
 	    state: string;
 		args: any;
 		extern: boolean;
 	}
 
-	class Router extends Store {
+	/** Data that Router#changes emit to its listeners */
+	export interface IRouterData {
+	    state: IState;
+		args: any;
+		extern: boolean;
+	}
+
+	export class Router extends Store<IRouterData> {
 
 		private mapping:Array<IState> = null;
 		private state:IState;
@@ -24,10 +33,17 @@ module ho.flux {
 
 		constructor() {
 			super();
-			this.on('STATE', this.onStateChangeRequested);
+			this.on('STATE', this.onStateChangeRequested.bind(this));
 
-			this.initStates()
-			window.onhashchange = this.onHashChange;
+		}
+
+		public init(): Promise<any, any> {
+			let onHashChange = this.onHashChange.bind(this);
+			return this.initStates()
+			.then(() => {
+				window.onhashchange = onHashChange;
+				onHashChange();
+			});
 		}
 
 
@@ -38,8 +54,8 @@ module ho.flux {
 			});
 		}
 
-		private initStates(): void {
-			stateprovider.instance.getStates()
+		private initStates(): Promise<any, any> {
+			return stateprovider.instance.getStates()
 			.then((istates) => {
 				this.mapping = istates.states;
 			});
@@ -53,7 +69,7 @@ module ho.flux {
 
 		private onStateChangeRequested(data: IRouteData): void {
 			//current state and args equals requested state and args -> return
-			if(this.state && this.state.name === data.state && this.args === data.args)
+			if(this.state && this.state.name === data.state && this.equals(this.args, data.args))
 				return;
 
 			//get requested state
@@ -172,6 +188,10 @@ module ho.flux {
 				});
 			}
 			return url;
+		}
+
+		private equals(o1: any, o2: any) : boolean {
+			return JSON.stringify(o1) === JSON.stringify(o2);
 		}
 
 	}

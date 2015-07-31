@@ -18,10 +18,16 @@ var ho;
                 _super.call(this);
                 this.mapping = null;
                 this.args = null;
-                this.on('STATE', this.onStateChangeRequested);
-                this.initStates();
-                window.onhashchange = this.onHashChange;
+                this.on('STATE', this.onStateChangeRequested.bind(this));
             }
+            Router.prototype.init = function () {
+                var onHashChange = this.onHashChange.bind(this);
+                return this.initStates()
+                    .then(function () {
+                    window.onhashchange = onHashChange;
+                    onHashChange();
+                });
+            };
             Router.prototype.go = function (data) {
                 ho.flux.DISPATCHER.dispatch({
                     type: 'STATE',
@@ -30,7 +36,7 @@ var ho;
             };
             Router.prototype.initStates = function () {
                 var _this = this;
-                flux.stateprovider.instance.getStates()
+                return flux.stateprovider.instance.getStates()
                     .then(function (istates) {
                     _this.mapping = istates.states;
                 });
@@ -42,7 +48,7 @@ var ho;
             };
             Router.prototype.onStateChangeRequested = function (data) {
                 //current state and args equals requested state and args -> return
-                if (this.state && this.state.name === data.state && this.args === data.args)
+                if (this.state && this.state.name === data.state && this.equals(this.args, data.args))
                     return;
                 //get requested state
                 var state = this.getStateFromName(data.state);
@@ -138,7 +144,11 @@ var ho;
                 }
                 return url;
             };
+            Router.prototype.equals = function (o1, o2) {
+                return JSON.stringify(o1) === JSON.stringify(o2);
+            };
             return Router;
         })(flux.Store);
+        flux.Router = Router;
     })(flux = ho.flux || (ho.flux = {}));
 })(ho || (ho = {}));

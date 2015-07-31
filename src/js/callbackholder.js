@@ -8,9 +8,9 @@ var ho;
                 this.lastID = 1;
                 this.callbacks = {};
             }
-            CallbackHolder.prototype.register = function (callback) {
+            CallbackHolder.prototype.register = function (callback, self) {
                 var id = this.prefix + this.lastID++;
-                this.callbacks[id] = callback;
+                this.callbacks[id] = self ? callback.bind(self) : callback;
                 return id;
             };
             CallbackHolder.prototype.unregister = function (id) {

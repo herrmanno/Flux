@@ -4,8 +4,15 @@
 		<script src="./bower_components/ho-promise/dist/promise.js" charset="utf-8"></script>
 		<script src="./bower_components/ho-watch/dist/watch.js" charset="utf-8"></script>
 		<script src="./bower_components/ho-components/dist/components.js" charset="utf-8"></script>
+		<script src="../dist/flux.js" charset="utf-8"></script>
+		<script src="./components/app.js" charset="utf-8"></script>
 	</head>
 	<body>
 		<App></App>
+		<script type="text/javascript">
+			ho.components.register(App);
+			ho.components.run();
+			ho.flux.run()
+		</script>
 	</body>
 </html>

@@ -4,7 +4,6 @@
         "target": "es5",
         "module": "commonjs",
         "outDir": "../js",
-        "declaration": true,
         "noEmitOnError": false,
         "isolatedModules": false,
         "experimentalDecorators": true,

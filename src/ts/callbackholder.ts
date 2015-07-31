@@ -6,9 +6,9 @@ module ho.flux {
     	protected lastID: number = 1;
 		protected callbacks: {[key:string]:Function} = {};
 
-		public register(callback: Function): string {
+		public register(callback: Function, self?: any): string {
     		let id = this.prefix + this.lastID++;
-    		this.callbacks[id] = callback;
+    		this.callbacks[id] = self ? callback.bind(self) : callback;
     		return id;
   		}
 

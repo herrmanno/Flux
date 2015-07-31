@@ -5,7 +5,7 @@ declare module ho.flux {
         protected callbacks: {
             [key: string]: Function;
         };
-        register(callback: Function): string;
+        register(callback: Function, self?: any): string;
         unregister(id: any): void;
     }
 }
