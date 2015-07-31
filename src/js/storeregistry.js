@@ -17,15 +17,30 @@ var ho;
                 return this.stores[name];
             };
             Storeregistry.prototype.loadStore = function (name) {
-                if (flux.STORES[name] !== undefined && flux.STORES[name] instanceof flux.Store)
-                    return Promise.create(flux.STORES[name]);
-                else {
-                    return new Promise(function (resolve, reject) {
+                return new Promise(function (resolve, reject) {
+                    var _this = this;
+                    if (this.get(name) instanceof flux.Store)
+                        resolve(this.get(name));
+                    else {
                         flux.storeprovider.instance.getStore(name)
-                            .then(function (s) { resolve(s); })
-                            .catch(function (e) { reject(e); });
+                            .then(function (storeClass) {
+                            _this.register(new storeClass());
+                            resolve(_this.get(name));
+                        })
+                            .catch(reject);
+                    }
+                }.bind(this));
+                /*
+                if(STORES[name] !== undefined && STORES[name] instanceof Store)
+                    return Promise.create(STORES[name]);
+                else {
+                    return new Promise((resolve, reject) => {
+                        storeprovider.instance.getStore(name)
+                        .then((s)=>{resolve(s);})
+                        .catch((e)=>{reject(e);});
                     });
                 }
+                */
             };
             return Storeregistry;
         })();

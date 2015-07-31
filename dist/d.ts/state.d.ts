@@ -5,7 +5,7 @@ declare module ho.flux {
         name: string;
         url: string;
         redirect?: string;
-        before?: () => Promise<any, any>;
+        before?: (data: IRouteData) => Promise<any, any>;
         view?: Array<IViewState>;
     }
     interface IViewState {

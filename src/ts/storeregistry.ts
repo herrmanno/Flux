@@ -17,7 +17,23 @@ module ho.flux {
 			return <T>this.stores[name];
 		}
 
-		public loadStore(name: string): Promise<typeof Store, string> {
+		public loadStore(name: string): Promise<Store<any>, string> {
+			return new Promise(function(resolve, reject) {
+				if(this.get(name) instanceof Store)
+					resolve(this.get(name))
+				else {
+
+					storeprovider.instance.getStore(name)
+					.then((storeClass) => {
+						this.register(new storeClass());
+						resolve(this.get(name));
+					})
+					.catch(reject);
+				}
+
+			}.bind(this));
+
+			/*
 			if(STORES[name] !== undefined && STORES[name] instanceof Store)
 				return Promise.create(STORES[name]);
 			else {
@@ -27,6 +43,7 @@ module ho.flux {
 					.catch((e)=>{reject(e);});
 				});
 			}
+			*/
 
 		}
 	}

@@ -24,8 +24,12 @@
     ],
     "files": [
         "./components/app.ts",
+        "./components/loginform.ts",
         "./components/test.ts",
         "./components/view.ts",
-        "./states.ts"
+        "./states.ts",
+        "./stores/LoginStore.ts",
+        "./stores/MyRouter.ts",
+        "./stores/UserStore.ts"
     ]
 }

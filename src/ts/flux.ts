@@ -15,6 +15,6 @@ module ho.flux {
 
 	export function run(): Promise<any, any> {
 		//return (<Router>ho.flux.STORES['Router']).init();
-		return STORES.get(Router)._init();
+		return STORES.get(Router).init();
 	}
 }

@@ -12,15 +12,17 @@ var ho;
 (function (ho) {
     var flux;
     (function (flux) {
+        var Promise = ho.promise.Promise;
         var Router = (function (_super) {
             __extends(Router, _super);
+            //private state:IState;
+            //private args:any = null;
             function Router() {
                 _super.call(this);
                 this.mapping = null;
-                this.args = null;
-                this.on('STATE', this.onStateChangeRequested.bind(this));
             }
-            Router.prototype._init = function () {
+            Router.prototype.init = function () {
+                this.on('STATE', this.onStateChangeRequested.bind(this));
                 var onHashChange = this.onHashChange.bind(this);
                 return this.initStates()
                     .then(function () {
@@ -35,11 +37,10 @@ var ho;
                 });
             };
             Router.prototype.initStates = function () {
-                var _this = this;
                 return flux.stateprovider.instance.getStates()
                     .then(function (istates) {
-                    _this.mapping = istates.states;
-                });
+                    this.mapping = istates.states;
+                }.bind(this));
             };
             Router.prototype.getStateFromName = function (name) {
                 return this.mapping.filter(function (s) {
@@ -48,7 +49,8 @@ var ho;
             };
             Router.prototype.onStateChangeRequested = function (data) {
                 //current state and args equals requested state and args -> return
-                if (this.state && this.state.name === data.state && this.equals(this.args, data.args))
+                //if(this.state && this.state.name === data.state && this.equals(this.args, data.args))
+                if (this.data && this.data.state && this.data.state.name === data.state && this.equals(this.data.args, data.args))
                     return;
                 //get requested state
                 var state = this.getStateFromName(data.state);
@@ -56,21 +58,27 @@ var ho;
                 if (!!state.redirect) {
                     state = this.getStateFromName(state.redirect);
                 }
-                //TODO handler promises & actions
-                //does the state change request comes from extern e.g. url change in browser window ?
-                var extern = !!data.extern;
-                //------- set current state & arguments
-                this.state = state;
-                this.args = data.args;
-                this.data = {
-                    state: state,
-                    args: data.args,
-                    extern: extern,
-                };
-                //------- set url for browser
-                var url = this.urlFromState(state.url, data.args);
-                this.setUrl(url);
-                this.changed();
+                //TODO handler promises
+                var prom = typeof state.before === 'function' ? state.before(data) : Promise.create(undefined);
+                prom
+                    .then(function () {
+                    //does the state change request comes from extern e.g. url change in browser window ?
+                    var extern = !!data.extern;
+                    //------- set current state & arguments
+                    //this.state = state;
+                    //this.args = data.args;
+                    this.data = {
+                        state: state,
+                        args: data.args,
+                        extern: extern,
+                    };
+                    //------- set url for browser
+                    var url = this.urlFromState(state.url, data.args);
+                    this.setUrl(url);
+                    this.changed();
+                }.bind(this), function (data) {
+                    this.onStateChangeRequested(data);
+                }.bind(this));
             };
             Router.prototype.onHashChange = function () {
                 var s = this.stateFromUrl(window.location.hash.substr(1));

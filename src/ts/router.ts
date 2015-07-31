@@ -28,16 +28,18 @@ module ho.flux {
 	export class Router extends Store<IRouterData> {
 
 		private mapping:Array<IState> = null;
-		private state:IState;
-		private args:any = null;
+		//private state:IState;
+		//private args:any = null;
 
 		constructor() {
 			super();
-			this.on('STATE', this.onStateChangeRequested.bind(this));
 		}
 
-		public _init(): Promise<any, any> {
+		public init(): Promise<any, any> {
+			this.on('STATE', this.onStateChangeRequested.bind(this));
+
 			let onHashChange = this.onHashChange.bind(this);
+
 			return this.initStates()
 			.then(() => {
 				window.onhashchange = onHashChange;
@@ -55,9 +57,9 @@ module ho.flux {
 
 		private initStates(): Promise<any, any> {
 			return stateprovider.instance.getStates()
-			.then((istates) => {
+			.then(function(istates) {
 				this.mapping = istates.states;
-			});
+			}.bind(this));
 		}
 
 		private getStateFromName(name: string): IState {
@@ -66,9 +68,10 @@ module ho.flux {
 			})[0];
 		}
 
-		private onStateChangeRequested(data: IRouteData): void {
+		protected onStateChangeRequested(data: IRouteData): void {
 			//current state and args equals requested state and args -> return
-			if(this.state && this.state.name === data.state && this.equals(this.args, data.args))
+			//if(this.state && this.state.name === data.state && this.equals(this.args, data.args))
+			if(this.data && this.data.state && this.data.state.name === data.state && this.equals(this.data.args, data.args))
 				return;
 
 			//get requested state
@@ -81,27 +84,35 @@ module ho.flux {
 			}
 
 
-			//TODO handler promises & actions
+			//TODO handler promises
+			let prom = typeof state.before === 'function' ? state.before(data) : Promise.create(undefined);
+			prom
+			.then(function() {
 
+				//does the state change request comes from extern e.g. url change in browser window ?
+				let extern = !! data.extern;
 
-			//does the state change request comes from extern e.g. url change in browser window ?
-			let extern = !! data.extern;
+				//------- set current state & arguments
+				//this.state = state;
+				//this.args = data.args;
 
-			//------- set current state & arguments
-			this.state = state;
-			this.args = data.args;
+				this.data = {
+					state: state,
+					args: data.args,
+					extern: extern,
+				};
 
-			this.data = {
-				state: state,
-				args: data.args,
-				extern: extern,
-			};
+				//------- set url for browser
+				var url = this.urlFromState(state.url, data.args);
+				this.setUrl(url);
 
-			//------- set url for browser
-			var url = this.urlFromState(state.url, data.args);
-			this.setUrl(url);
+				this.changed();
 
-			this.changed();
+			}.bind(this),
+			function(data) {
+				this.onStateChangeRequested(data);
+			}.bind(this));
+
 		}
 
 		private onHashChange(): void {

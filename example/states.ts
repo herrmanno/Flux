@@ -6,7 +6,7 @@ class States implements ho.flux.IStates {
 		name: 'login',
 		url: 'login',
 		view: [
-			{name: 'view1', html: 'html/login.html'}
+			{name: 'view1', html: '<!-- requires="Loginform"--><Loginform/>'}
 		]
 	}
 
@@ -18,6 +18,25 @@ class States implements ho.flux.IStates {
 		]
 	}
 
+	private = {
+		name: 'private',
+		url: 'private',
+		view: [
+			{name: 'view1', html: 'html/private.html'}
+		],
+		before: () => {
+			return new ho.promise.Promise((resolve, reject) => {
+				let s: LoginStore = typeof LoginStore !== 'undefined' && ho.flux.STORES.get(LoginStore);
+				if(s && s.isLoggedIn())
+					resolve(null);
+				else {
+					window.alert("You're a bad boy...");
+					reject({state: 'login'});
+				}
+			});
+		}
+	}
+
 	catchall = {
 		name: 'catchall',
 		url: '.*',
@@ -27,6 +46,7 @@ class States implements ho.flux.IStates {
 	states = [
 		this.login,
 		this.register,
+		this.private,
 		this.catchall
 	];
 }

@@ -4,6 +4,8 @@
 
 class View extends ho.components.Component {
 
+	html = "";
+
 	properties = [
 		{name: 'viewname', required: true}
 	];

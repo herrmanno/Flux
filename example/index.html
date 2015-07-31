@@ -6,14 +6,21 @@
 		<script src="./bower_components/ho-components/dist/components.js" charset="utf-8"></script>
 		<script src="../dist/flux.js" charset="utf-8"></script>
 		<script src="./components/app.js" charset="utf-8"></script>
+		<script src="./stores/MyRouter.js" charset="utf-8"></script>
 	</head>
 	<body>
+		<a href="#login">Login</a>
+		<a href="#register">Register</a>
+
 		<App></App>
+
 		<script type="text/javascript">
+			ho.flux.Router = MyRouter;
+			new MyRouter();
 			ho.components.register(App);
 			ho.components.run()
+			//.then(ho.flux.STORES.get(MyRouter).init());
 			.then(ho.flux.run);
-			//ho.flux.run()
 		</script>
 	</body>
 </html>

@@ -18,14 +18,12 @@ declare module ho.flux {
     }
     class Router extends Store<IRouterData> {
         private mapping;
-        private state;
-        private args;
         constructor();
-        _init(): Promise<any, any>;
+        init(): Promise<any, any>;
         go(data: IRouteData): void;
         private initStates();
         private getStateFromName(name);
-        private onStateChangeRequested(data);
+        protected onStateChangeRequested(data: IRouteData): void;
         private onHashChange();
         private setUrl(url);
         private regexFromUrl(url);

@@ -8,6 +8,6 @@ declare module ho.flux {
         get<T extends Store<any>>(storeClass: {
             new (): T;
         }): T;
-        loadStore(name: string): Promise<typeof Store, string>;
+        loadStore(name: string): Promise<Store<any>, string>;
     }
 }

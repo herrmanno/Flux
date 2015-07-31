@@ -9,12 +9,15 @@ module ho.flux.storeprovider {
 		getStore(name:string): Promise<typeof Store, string>;
     }
 
+	export let mapping: {[name:string]:string} = {};
+
 	class StoreProvider implements IStoreProvider {
 
         useMin: boolean = false;
 
         resolve(name: string): string {
-            return this.useMin ?
+            name = name.split('.').join('/');
+			return this.useMin ?
                 `stores/${name}.min.js` :
                 `stores/${name}.js`;
         }
@@ -24,18 +27,26 @@ module ho.flux.storeprovider {
 				return Promise.create(window[name]);
 
 			return new Promise<typeof Store, any>((resolve, reject) => {
-                let src = this.resolve(name);
+                let src = mapping[name] || this.resolve(name);
                 let script = document.createElement('script');
                 script.onload = function() {
-                    if(typeof window[name] === 'function')
-                        resolve(window[name]);
+                    if(typeof this.get(name) === 'function')
+                        resolve(this.get(name));
                     else
                         reject(`Error while loading Attribute ${name}`)
-                };
+                }.bind(this);
                 script.src = src;
                 document.getElementsByTagName('head')[0].appendChild(script);
             });
 
+        }
+
+		private get(name: string): typeof Store {
+            let c: any = window;
+            name.split('.').forEach((part) => {
+                c = c[part];
+            });
+            return <typeof Store>c;
         }
 
     }
