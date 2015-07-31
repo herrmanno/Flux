@@ -23,7 +23,11 @@ class View extends ho.components.Component {
 		})[0].html;
 
 		this.getHtml(html)
-		.then(function(html) {
+		.then(function(h) {
+			html = h;
+			return this.loadDynamicRequirements(html);
+		}.bind(this))
+		.then(function() {
 			this.html = false;
 			this.element.innerHTML = html;
 			this.render();
@@ -52,7 +56,26 @@ class View extends ho.components.Component {
 			xmlhttp.open('GET', html, true);
 			xmlhttp.send();
 		});
+	}
 
+	protected loadDynamicRequirements(html: string): ho.promise.Promise<string, string> {
+		let requirements = html.match(/<!--\s*requires?="(.+)"/);
+		if(requirements !== null)
+			requirements = requirements [1].split(",").map((r) => {return r.trim()});
+		else
+			requirements = [];
+
+		let Registry = ho.components.registry.instance;
+
+		let promises = requirements
+        .filter((req) => {
+            return !Registry.hasComponent(req);
+        })
+        .map((req) => {
+            return Registry.loadComponent(req);
+        });
+
+		return ho.promise.Promise.all(promises);
 	}
 
 

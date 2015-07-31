@@ -20,7 +20,7 @@ var ho;
                 this.args = null;
                 this.on('STATE', this.onStateChangeRequested.bind(this));
             }
-            Router.prototype.init = function () {
+            Router.prototype._init = function () {
                 var onHashChange = this.onHashChange.bind(this);
                 return this.initStates()
                     .then(function () {
@@ -83,13 +83,6 @@ var ho;
                     }
                 });
             };
-            /*
-            private handle = {
-                'STATE': function(data) {
-                    this.states[data.state](data.args, data.extern);
-                }
-            }
-            */
             Router.prototype.setUrl = function (url) {
                 if (window.location.hash.substr(1) === url)
                     return;

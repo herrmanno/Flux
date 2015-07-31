@@ -34,10 +34,9 @@ module ho.flux {
 		constructor() {
 			super();
 			this.on('STATE', this.onStateChangeRequested.bind(this));
-
 		}
 
-		public init(): Promise<any, any> {
+		public _init(): Promise<any, any> {
 			let onHashChange = this.onHashChange.bind(this);
 			return this.initStates()
 			.then(() => {
@@ -117,14 +116,6 @@ module ho.flux {
 				}
 			});
 		}
-
-		/*
-		private handle = {
-			'STATE': function(data) {
-				this.states[data.state](data.args, data.extern);
-			}
-		}
-		*/
 
 		private setUrl(url: string): void {
 			if(window.location.hash.substr(1) === url)

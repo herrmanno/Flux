@@ -13,7 +13,7 @@ var ho;
             new flux.Router();
         function run() {
             //return (<Router>ho.flux.STORES['Router']).init();
-            return flux.STORES.get(flux.Router).init();
+            return flux.STORES.get(flux.Router)._init();
         }
         flux.run = run;
     })(flux = ho.flux || (ho.flux = {}));

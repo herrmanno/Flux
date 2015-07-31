@@ -21,7 +21,7 @@ declare module ho.flux {
         private state;
         private args;
         constructor();
-        init(): Promise<any, any>;
+        _init(): Promise<any, any>;
         go(data: IRouteData): void;
         private initStates();
         private getStateFromName(name);

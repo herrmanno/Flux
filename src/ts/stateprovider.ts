@@ -22,12 +22,14 @@ module ho.flux.stateprovider {
 
         getStates(name = "States"): Promise<IStates, string> {
 			return new Promise<IStates, any>((resolve, reject) => {
-                let src = this.resolve();
+				let src = this.resolve();
                 let script = document.createElement('script');
                 script.onload = function() {
                     resolve(new window[name]);
                 };
-				script.onerror = reject;
+				script.onerror = (e) => {
+					reject(e);
+				};
                 script.src = src;
                 document.getElementsByTagName('head')[0].appendChild(script);
             });

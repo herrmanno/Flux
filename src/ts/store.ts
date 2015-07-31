@@ -15,14 +15,11 @@ module ho.flux {
 			this.id = ho.flux.DISPATCHER.register(this.handle.bind(this));
 			//ho.flux.STORES[this.name] = this;
 			ho.flux.STORES.register(this);
-			this.init();
 		}
 
 		 get name(): string {
 			return this.constructor.toString().match(/\w+/g)[1];
 		}
-
-		protected init(): void {}
 
 		public register(callback: (data:T)=>void, self?:any): string {
 			return super.register(callback, self);

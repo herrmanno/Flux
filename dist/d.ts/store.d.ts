@@ -7,7 +7,6 @@ declare module ho.flux {
         private handlers;
         constructor();
         name: string;
-        protected init(): void;
         register(callback: (data: T) => void, self?: any): string;
         protected on(type: string, func: Function): void;
         protected handle(action: IAction): void;

@@ -11,8 +11,9 @@
 		<App></App>
 		<script type="text/javascript">
 			ho.components.register(App);
-			ho.components.run();
-			ho.flux.run()
+			ho.components.run()
+			.then(ho.flux.run);
+			//ho.flux.run()
 		</script>
 	</body>
 </html>

@@ -24,6 +24,7 @@
     ],
     "files": [
         "./components/app.ts",
+        "./components/test.ts",
         "./components/view.ts",
         "./states.ts"
     ]
