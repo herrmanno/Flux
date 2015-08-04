@@ -5,6 +5,7 @@
         "module": "commonjs",
         "sourceMap": true,
         "inlineSourceMap": true,
+        "inlineSources": true,
         "isolatedModules": false,
         "jsx": "react",
         "experimentalDecorators": true,

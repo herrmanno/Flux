@@ -1,9 +1,12 @@
+/// <reference path="../../dist/flux.d.ts"/>
+/// <reference path="../bower_components/ho-components/dist/components.d.ts"/>
+
 class Loginform extends ho.components.Component {
 
 	html =
 		`<input id="username"/>
 		<input id="password"/>
-		<button onclick="{#login()}>Login</button>
+		<button onclick="{#login()}">Login</button>
 		<p>{error}</p>
 		`;
 
@@ -12,10 +15,9 @@ class Loginform extends ho.components.Component {
 
 	init() {
 		return ho.flux.STORES.loadStore('LoginStore')
-		.then((s) => {
-			this.store = s;
-			this.store
-		})
+		.then(()=> {
+			ho.flux.STORES.get(LoginStore).register(this.loginStoreChanged, this);
+		});
 	}
 
 	login() {
@@ -24,5 +26,12 @@ class Loginform extends ho.components.Component {
 			password: this.children['password'].value
 		};
 		ho.flux.STORES.get(LoginStore).login(data);
+	}
+
+	protected loginStoreChanged(data: LoginStoreData): void {
+		if(typeof data.error === 'string') {
+			this.error = data.error;
+			this.render();
+		}
 	}
 }

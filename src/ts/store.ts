@@ -17,6 +17,8 @@ module ho.flux {
 			ho.flux.STORES.register(this);
 		}
 
+		public init(): any {}
+
 		 get name(): string {
 			return this.constructor.toString().match(/\w+/g)[1];
 		}

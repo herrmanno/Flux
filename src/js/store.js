@@ -18,6 +18,7 @@ var ho;
                 //ho.flux.STORES[this.name] = this;
                 ho.flux.STORES.register(this);
             }
+            Store.prototype.init = function () { };
             Object.defineProperty(Store.prototype, "name", {
                 get: function () {
                     return this.constructor.toString().match(/\w+/g)[1];

@@ -11,25 +11,47 @@ var ho;
             }
             Storeregistry.prototype.register = function (store) {
                 this.stores[store.name] = store;
+                return store;
             };
             Storeregistry.prototype.get = function (storeClass) {
                 var name = storeClass.toString().match(/\w+/g)[1];
                 return this.stores[name];
             };
             Storeregistry.prototype.loadStore = function (name) {
-                return new Promise(function (resolve, reject) {
-                    var _this = this;
-                    if (this.get(name) instanceof flux.Store)
-                        resolve(this.get(name));
+                var self = this;
+                var ret = this.getParentOfStore(name)
+                    .then(function (parent) {
+                    if (self.stores[parent] instanceof flux.Store || parent === 'ho.flux.Store')
+                        return true;
+                    else
+                        return self.loadStore(parent);
+                })
+                    .then(function (parentType) {
+                    return ho.flux.storeprovider.instance.getStore(name);
+                })
+                    .then(function (storeClass) {
+                    return self.register(new storeClass).init();
+                })
+                    .then(function () {
+                    return self.stores[name];
+                });
+                return ret;
+                /*
+                return new Promise(function(resolve, reject) {
+                    if(this.get(name) instanceof Store)
+                        resolve(this.get(name))
                     else {
-                        flux.storeprovider.instance.getStore(name)
-                            .then(function (storeClass) {
-                            _this.register(new storeClass());
-                            resolve(_this.get(name));
+    
+                        storeprovider.instance.getStore(name)
+                        .then((storeClass) => {
+                            this.register(new storeClass());
+                            resolve(this.get(name));
                         })
-                            .catch(reject);
+                        .catch(reject);
                     }
+    
                 }.bind(this));
+                */
                 /*
                 if(STORES[name] !== undefined && STORES[name] instanceof Store)
                     return Promise.create(STORES[name]);
@@ -41,6 +63,30 @@ var ho;
                     });
                 }
                 */
+            };
+            Storeregistry.prototype.getParentOfStore = function (name) {
+                return new Promise(function (resolve, reject) {
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4) {
+                            var resp = xmlhttp.responseText;
+                            if (xmlhttp.status == 200) {
+                                var m = resp.match(/}\)\((.*)\);/);
+                                if (m !== null) {
+                                    resolve(m[1]);
+                                }
+                                else {
+                                    resolve(null);
+                                }
+                            }
+                            else {
+                                reject(resp);
+                            }
+                        }
+                    };
+                    xmlhttp.open('GET', ho.flux.storeprovider.instance.resolve(name));
+                    xmlhttp.send();
+                });
             };
             return Storeregistry;
         })();

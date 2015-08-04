@@ -45,9 +45,10 @@ gulp.task('mini', ['package'], function() {
 gulp.task('def', ['mini'], function() {
     var ts = gulp.src(src.ts)
     .pipe(typescript({
+        out: entry,
         declarationFiles: true
     }));
-    return ts.dts.pipe(gulp.dest(dist + '/d.ts'));
+    return ts.dts.pipe(gulp.dest(dist));
 });
 
 

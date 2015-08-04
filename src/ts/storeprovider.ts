@@ -33,7 +33,7 @@ module ho.flux.storeprovider {
                     if(typeof this.get(name) === 'function')
                         resolve(this.get(name));
                     else
-                        reject(`Error while loading Attribute ${name}`)
+                        reject(`Error while loading Store ${name}`)
                 }.bind(this);
                 script.src = src;
                 document.getElementsByTagName('head')[0].appendChild(script);
