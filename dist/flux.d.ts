@@ -30,6 +30,7 @@ declare module ho.flux {
     import Promise = ho.promise.Promise;
     let DISPATCHER: Dispatcher;
     let STORES: Storeregistry;
+    let dir: boolean;
     function run(): Promise<any, any>;
 }
 declare module ho.flux {
