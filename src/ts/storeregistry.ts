@@ -1,5 +1,3 @@
-/// <reference path="../../bower_components/ho-promise/dist/d.ts/promise.d.ts"/>
-/// <reference path="./storeprovider.ts"/>
 
 module ho.flux {
 	import Promise = ho.promise.Promise;

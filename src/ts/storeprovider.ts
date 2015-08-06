@@ -1,4 +1,3 @@
-/// <reference path="../../bower_components/ho-promise/dist/d.ts/promise.d.ts"/>
 
 module ho.flux.storeprovider {
 	import Promise = ho.promise.Promise;
@@ -16,7 +15,13 @@ module ho.flux.storeprovider {
         useMin: boolean = false;
 
         resolve(name: string): string {
-            name = name.split('.').join('/');
+
+			if(ho.flux.dir) {
+                name += '.' + name.split('.').pop();
+            }
+
+			name = name.split('.').join('/');
+
 			return this.useMin ?
                 `stores/${name}.min.js` :
                 `stores/${name}.js`;

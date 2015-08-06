@@ -1,4 +1,3 @@
-/// <reference path="./callbackholder.ts"/>
 
 module ho.flux {
 

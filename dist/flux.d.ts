@@ -26,69 +26,11 @@ declare module ho.flux {
         private stopDispatching();
     }
 }
-declare module ho.flux.storeprovider {
-    import Promise = ho.promise.Promise;
-    interface IStoreProvider {
-        useMin: boolean;
-        resolve(name: string): string;
-        getStore(name: string): Promise<typeof Store, string>;
-    }
-    let mapping: {
-        [name: string]: string;
-    };
-    let instance: IStoreProvider;
-}
 declare module ho.flux {
     import Promise = ho.promise.Promise;
-    class Storeregistry {
-        private stores;
-        register(store: Store<any>): Store<any>;
-        get<T extends Store<any>>(storeClass: {
-            new (): T;
-        }): T;
-        loadStore(name: string): Promise<Store<any>, string>;
-        protected getParentOfStore(name: string): Promise<string, any>;
-    }
-}
-declare module ho.flux {
-    class Store<T> extends CallbackHolder {
-        protected data: T;
-        private id;
-        private handlers;
-        constructor();
-        init(): any;
-        name: string;
-        register(callback: (data: T) => void, self?: any): string;
-        protected on(type: string, func: Function): void;
-        protected handle(action: IAction): void;
-        protected changed(): void;
-    }
-}
-declare module ho.flux {
-    import Promise = ho.promise.Promise;
-    interface IState {
-        name: string;
-        url: string;
-        redirect?: string;
-        before?: (data: IRouteData) => Promise<any, any>;
-        view?: Array<IViewState>;
-    }
-    interface IViewState {
-        name: string;
-        html: string;
-    }
-    interface IStates {
-        states: Array<IState>;
-    }
-}
-declare module ho.flux.stateprovider {
-    import Promise = ho.promise.Promise;
-    interface IStateProvider {
-        useMin: boolean;
-        resolve(): string;
-        getStates(name?: string): Promise<IStates, string>;
-    }
-    let instance: IStateProvider;
+    let DISPATCHER: Dispatcher;
+    let STORES: Storeregistry;
+    function run(): Promise<any, any>;
 }
 declare module ho.flux {
     import Promise = ho.promise.Promise;
@@ -123,7 +65,65 @@ declare module ho.flux {
 }
 declare module ho.flux {
     import Promise = ho.promise.Promise;
-    let DISPATCHER: Dispatcher;
-    let STORES: Storeregistry;
-    function run(): Promise<any, any>;
+    interface IState {
+        name: string;
+        url: string;
+        redirect?: string;
+        before?: (data: IRouteData) => Promise<any, any>;
+        view?: Array<IViewState>;
+    }
+    interface IViewState {
+        name: string;
+        html: string;
+    }
+    interface IStates {
+        states: Array<IState>;
+    }
+}
+declare module ho.flux.stateprovider {
+    import Promise = ho.promise.Promise;
+    interface IStateProvider {
+        useMin: boolean;
+        resolve(): string;
+        getStates(name?: string): Promise<IStates, string>;
+    }
+    let instance: IStateProvider;
+}
+declare module ho.flux {
+    class Store<T> extends CallbackHolder {
+        protected data: T;
+        private id;
+        private handlers;
+        constructor();
+        init(): any;
+        name: string;
+        register(callback: (data: T) => void, self?: any): string;
+        protected on(type: string, func: Function): void;
+        protected handle(action: IAction): void;
+        protected changed(): void;
+    }
+}
+declare module ho.flux.storeprovider {
+    import Promise = ho.promise.Promise;
+    interface IStoreProvider {
+        useMin: boolean;
+        resolve(name: string): string;
+        getStore(name: string): Promise<typeof Store, string>;
+    }
+    let mapping: {
+        [name: string]: string;
+    };
+    let instance: IStoreProvider;
+}
+declare module ho.flux {
+    import Promise = ho.promise.Promise;
+    class Storeregistry {
+        private stores;
+        register(store: Store<any>): Store<any>;
+        get<T extends Store<any>>(storeClass: {
+            new (): T;
+        }): T;
+        loadStore(name: string): Promise<Store<any>, string>;
+        protected getParentOfStore(name: string): Promise<string, any>;
+    }
 }

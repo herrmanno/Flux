@@ -14,13 +14,16 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true
     },
+    "compileOnSave": false,
     "filesGlob": [
         "./**/*.ts",
         "./**/*.tsx",
+        "../typings.d.ts",
         "!./node_modules/**/*"
     ],
     "files": [
         "./callbackholder.ts",
+        "./config.ts",
         "./dispatcher.ts",
         "./flux.ts",
         "./router.ts",
@@ -28,6 +31,7 @@
         "./stateprovider.ts",
         "./store.ts",
         "./storeprovider.ts",
-        "./storeregistry.ts"
+        "./storeregistry.ts",
+        "../typings.d.ts"
     ]
 }

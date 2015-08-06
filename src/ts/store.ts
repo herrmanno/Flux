@@ -1,5 +1,3 @@
-/// <reference path="./callbackholder.ts"/>
-/// <reference path="./storeregistry.ts"/>
 
 module ho.flux {
 

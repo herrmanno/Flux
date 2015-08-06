@@ -1,9 +1,3 @@
-/// <reference path="./store"/>
-/// <reference path="./dispatcher.ts"/>
-/// <reference path="./state.ts"/>
-/// <reference path="./stateprovider.ts"/>
-
-/// <reference path="../../bower_components/ho-promise/dist/d.ts/promise.d.ts"/>
 
 
 module ho.flux {
