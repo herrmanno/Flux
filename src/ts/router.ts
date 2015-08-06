@@ -63,13 +63,21 @@ module ho.flux {
 		}
 
 		protected onStateChangeRequested(data: IRouteData): void {
-			//current state and args equals requested state and args -> return
-			//if(this.state && this.state.name === data.state && this.equals(this.args, data.args))
-			if(this.data && this.data.state && this.data.state.name === data.state && this.equals(this.data.args, data.args))
-				return;
-
 			//get requested state
 			let state = this.getStateFromName(data.state);
+			let url = this.urlFromState(state.url, data.args);
+
+			//current state and args equals requested state and args -> return
+			if(
+				this.data &&
+				this.data.state &&
+				this.data.state.name === data.state &&
+				this.equals(this.data.args, data.args) &&
+				url === window.location.hash.substr(1)
+			) {
+				return;
+			}
+
 
 
 			//requested state has an redirect property -> call redirect state
