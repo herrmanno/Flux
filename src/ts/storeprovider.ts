@@ -16,6 +16,9 @@ module ho.flux.storeprovider {
 
         resolve(name: string): string {
 
+			if(!!mapping[name])
+                return mapping[name];
+
 			if(ho.flux.dir) {
                 name += '.' + name.split('.').pop();
             }
@@ -32,7 +35,7 @@ module ho.flux.storeprovider {
 				return Promise.create(window[name]);
 
 			return new Promise<typeof Store, any>((resolve, reject) => {
-                let src = mapping[name] || this.resolve(name);
+                let src = this.resolve(name);
                 let script = document.createElement('script');
                 script.onload = function() {
                     if(typeof this.get(name) === 'function')
