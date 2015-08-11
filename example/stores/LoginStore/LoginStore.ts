@@ -1,3 +1,5 @@
+/// <reference path="../../../dist/flux.d.ts"/>
+
 interface LoginStoreData extends IUser {
 	error: string;
 }
@@ -25,19 +27,19 @@ class LoginStore extends ho.flux.Store<LoginStoreData> {
 
 		if(found) {
 			this.data = found;
-			this.changed();
 			ho.flux.DISPATCHER.dispatch({type: LoginStore.actions.LOGIN_SUCCES});
 		} else {
-			this.data.error = "Username or Password is wrong!"
+			this.data = <LoginStoreData>{error: "Username or Password is wrong!"};
 			ho.flux.DISPATCHER.dispatch({type: LoginStore.actions.LOGIN_ERROR});
 		}
+		this.changed();
 
 		this.changed();
 
 	}
 
 	isLoggedIn(): boolean {
-		return !!this.data;
+		return !!this.data.name;
 	}
 
 

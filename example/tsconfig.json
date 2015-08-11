@@ -24,13 +24,14 @@
         "!./bower_components/**/*"
     ],
     "files": [
-        "./components/app.ts",
-        "./components/loginform.ts",
-        "./components/test.ts",
-        "./components/view.ts",
+        "./components/App/app.ts",
+        "./components/Loginform/loginform.ts",
+        "./components/Navbar/navbar.ts",
+        "./components/Test/test.ts",
+        "./components/View/view.ts",
         "./states.ts",
-        "./stores/LoginStore.ts",
-        "./stores/MyRouter.ts",
-        "./stores/UserStore.ts"
+        "./stores/LoginStore/LoginStore.ts",
+        "./stores/Myrouter/MyRouter.ts",
+        "./stores/UserStore/UserStore.ts"
     ]
 }

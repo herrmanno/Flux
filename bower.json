@@ -23,6 +23,7 @@
     "tests"
   ],
   "dependencies": {
-    "ho-promise": "*"
+    "ho-promise": "*",
+    "ho-classloader": "*"
   }
 }

@@ -22,12 +22,6 @@ module ho.flux {
 	export class Router extends Store<IRouterData> {
 
 		private mapping:Array<IState> = null;
-		//private state:IState;
-		//private args:any = null;
-
-		constructor() {
-			super();
-		}
 
 		public init(): Promise<any, any> {
 			this.on('STATE', this.onStateChangeRequested.bind(this));
@@ -41,11 +35,27 @@ module ho.flux {
 			});
 		}
 
+		public go(state: string, data?: any): void
+		public go(data: IRouteData): void
+		public go(data: IRouteData | string, args?: any): void {
 
-		public go(data: IRouteData): void {
+			let _data: IRouteData = {
+				state: undefined,
+				args: undefined,
+				extern: false
+			};
+
+			if(typeof data === 'string') {
+				_data.state = data;
+				_data.args = args;
+			} else {
+				_data.state = data.state;
+				_data.args = data.args;
+			}
+
 			ho.flux.DISPATCHER.dispatch({
 				type: 'STATE',
-				data: data
+				data: _data
 			});
 		}
 
@@ -86,17 +96,12 @@ module ho.flux {
 			}
 
 
-			//TODO handler promises
 			let prom = typeof state.before === 'function' ? state.before(data) : Promise.create(undefined);
 			prom
 			.then(function() {
 
 				//does the state change request comes from extern e.g. url change in browser window ?
 				let extern = !! data.extern;
-
-				//------- set current state & arguments
-				//this.state = state;
-				//this.args = data.args;
 
 				this.data = {
 					state: state,

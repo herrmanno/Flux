@@ -8,8 +8,8 @@ var concat = require('gulp-concat');
 
 
 var src = {
-    ts: ['src/ts/**/*.ts'],
-    js: ['src/js/**/*.js']
+    ts: ['src/**/*.ts'],
+    js: ['src/**/*.js']
 };
 
 var name = 'ho-flux';

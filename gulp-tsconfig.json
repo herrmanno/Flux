@@ -4,19 +4,18 @@
         "target": "es5",
         "module": "commonjs",
         "noEmitOnError": false,
-        "sortOutput": true, 
+        "sortOutput": true,
         "removeComments": false
     },
     "compileOnSave": false,
     "files": [
-        "src/ts/callbackholder.ts",
-        "src/ts/state.ts",
-        "src/ts/stateprovider.ts",
-        "src/ts/storeprovider.ts",
-        "src/ts/storeregistry.ts",
-        "src/ts/store.ts",
-        "src/ts/router.ts",
-        "src/ts/dispatcher.ts",
-        "src/ts/flux.ts"
+        "src/ho/flux/callbackholder.ts",
+        "src/ho/flux/state.ts",
+        "src/ho/flux/stateprovider/stateprovider.ts",
+        "src/ho/flux/storeregistry.ts",
+        "src/ho/flux/store.ts",
+        "src/ho/flux/router.ts",
+        "src/ho/flux/dispatcher.ts",
+        "src/ho/flux/flux.ts"
     ]
 }

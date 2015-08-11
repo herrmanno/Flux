@@ -6,18 +6,46 @@ module ho.flux {
 
 		private stores: {[key: string]: Store<any>} = {};
 
+		private storeLoader = new ho.classloader.ClassLoader({
+           urlTemplate: 'stores/${name}.js',
+           useDir: true
+       });
+
 		public register(store: Store<any>): Store<any> {
 			this.stores[store.name] = store;
 			return store;
 		}
 
-		public get<T extends Store<any>>(storeClass: {new():T}): T {
-			let name = storeClass.toString().match(/\w+/g)[1];
+		public get(storeClass: string): Store<any>
+		public get<T extends Store<any>>(storeClass: {new():T}): T
+		public get<T extends Store<any>>(storeClass: any): T {
+			let name = void 0;
+			if(typeof storeClass === 'string')
+				name = storeClass;
+			else
+				name = storeClass.toString().match(/\w+/g)[1];
 			return <T>this.stores[name];
 		}
 
 		public loadStore(name: string): Promise<Store<any>, string> {
 
+			let self = this;
+
+			if(!!this.stores[name])
+				return Promise.create(this.stores[name]);
+
+            return this.storeLoader.load({
+                name,
+                super: ["ho.flux.Store"]
+            })
+            .then((classes: Array<typeof Store>) => {
+                classes.map(c => {
+                    self.register(new c).init();
+                });
+                return self.get(classes.pop());
+            })
+
+			/*
 			let self = this;
 
 		   	let ret = this.getParentOfStore(name)
@@ -38,6 +66,7 @@ module ho.flux {
 			});
 
 			return ret;
+			*/
 
 			/*
 			return new Promise(function(resolve, reject) {
@@ -70,6 +99,7 @@ module ho.flux {
 
 		}
 
+		/*
 		protected getParentOfStore(name: string): Promise<string, any> {
             return new Promise((resolve, reject) => {
 
@@ -97,6 +127,7 @@ module ho.flux {
 
             });
         }
+		*/
 	}
 
 }

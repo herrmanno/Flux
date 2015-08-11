@@ -1,3 +1,5 @@
+/// <reference path="bower_components/ho-promise/dist/promise.d.ts" />
+/// <reference path="bower_components/ho-classloader/dist/classloader.d.ts" />
 declare module ho.flux {
     class CallbackHolder {
         protected prefix: string;
@@ -49,8 +51,8 @@ declare module ho.flux {
     }
     class Router extends Store<IRouterData> {
         private mapping;
-        constructor();
         init(): Promise<any, any>;
+        go(state: string, data?: any): void;
         go(data: IRouteData): void;
         private initStates();
         private getStateFromName(name);
@@ -81,15 +83,6 @@ declare module ho.flux {
         states: Array<IState>;
     }
 }
-declare module ho.flux.stateprovider {
-    import Promise = ho.promise.Promise;
-    interface IStateProvider {
-        useMin: boolean;
-        resolve(): string;
-        getStates(name?: string): Promise<IStates, string>;
-    }
-    let instance: IStateProvider;
-}
 declare module ho.flux {
     class Store<T> extends CallbackHolder {
         protected data: T;
@@ -104,27 +97,25 @@ declare module ho.flux {
         protected changed(): void;
     }
 }
-declare module ho.flux.storeprovider {
-    import Promise = ho.promise.Promise;
-    interface IStoreProvider {
-        useMin: boolean;
-        resolve(name: string): string;
-        getStore(name: string): Promise<typeof Store, string>;
-    }
-    let mapping: {
-        [name: string]: string;
-    };
-    let instance: IStoreProvider;
-}
 declare module ho.flux {
     import Promise = ho.promise.Promise;
     class Storeregistry {
         private stores;
+        private storeLoader;
         register(store: Store<any>): Store<any>;
+        get(storeClass: string): Store<any>;
         get<T extends Store<any>>(storeClass: {
             new (): T;
         }): T;
         loadStore(name: string): Promise<Store<any>, string>;
-        protected getParentOfStore(name: string): Promise<string, any>;
     }
+}
+declare module ho.flux.stateprovider {
+    import Promise = ho.promise.Promise;
+    interface IStateProvider {
+        useMin: boolean;
+        resolve(): string;
+        getStates(name?: string): Promise<IStates, string>;
+    }
+    let instance: IStateProvider;
 }

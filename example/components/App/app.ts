@@ -2,8 +2,7 @@
 
 class App extends ho.components.Component {
 
-	requires = ['View']
+	requires = ['Navbar', 'View']
 
-	html = '<view viewname="view1"/>'
-	//html = '<h3>App</h3>'
+	html = '<navbar/><br/><view viewname="view1"/>'
 }

@@ -22,16 +22,15 @@
         "!./node_modules/**/*"
     ],
     "files": [
-        "./callbackholder.ts",
-        "./config.ts",
-        "./dispatcher.ts",
-        "./flux.ts",
-        "./router.ts",
-        "./state.ts",
-        "./stateprovider.ts",
-        "./store.ts",
-        "./storeprovider.ts",
-        "./storeregistry.ts",
-        "../typings.d.ts"
+        "./ho/flux/callbackholder.ts",
+        "./ho/flux/dispatcher.ts",
+        "./ho/flux/flux.ts",
+        "./ho/flux/router.ts",
+        "./ho/flux/state.ts",
+        "./ho/flux/stateprovider/stateprovider.ts",
+        "./ho/flux/store.ts",
+        "./ho/flux/storeprovider.ts",
+        "./ho/flux/storeregistry.ts",
+        "./typings.d.ts"
     ]
 }
