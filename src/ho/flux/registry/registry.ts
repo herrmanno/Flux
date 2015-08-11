@@ -3,6 +3,7 @@ module ho.flux.registry {
 	import Promise = ho.promise.Promise;
 
 	export let mapping: {[key:string]:string} = {};
+	export let useDir = true;
 
 	export class Registry {
 
@@ -10,7 +11,7 @@ module ho.flux.registry {
 
 		private storeLoader = new ho.classloader.ClassLoader({
            urlTemplate: 'stores/${name}.js',
-           useDir: true
+           useDir
        });
 
 		public register(store: Store<any>): Store<any> {

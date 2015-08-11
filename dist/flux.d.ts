@@ -102,6 +102,7 @@ declare module ho.flux.registry {
     let mapping: {
         [key: string]: string;
     };
+    let useDir: boolean;
     class Registry {
         private stores;
         private storeLoader;
