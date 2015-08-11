@@ -31,7 +31,7 @@ declare module ho.flux {
 declare module ho.flux {
     import Promise = ho.promise.Promise;
     let DISPATCHER: Dispatcher;
-    let STORES: Storeregistry;
+    let STORES: registry.Registry;
     let dir: boolean;
     function run(): Promise<any, any>;
 }
@@ -97,9 +97,12 @@ declare module ho.flux {
         protected changed(): void;
     }
 }
-declare module ho.flux {
+declare module ho.flux.registry {
     import Promise = ho.promise.Promise;
-    class Storeregistry {
+    let mapping: {
+        [key: string]: string;
+    };
+    class Registry {
         private stores;
         private storeLoader;
         register(store: Store<any>): Store<any>;

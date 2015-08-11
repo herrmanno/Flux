@@ -6,7 +6,7 @@ module ho.flux {
 
 	export let DISPATCHER: Dispatcher = new Dispatcher();
 
-	export let STORES: Storeregistry = new Storeregistry();
+	export let STORES: registry.Registry = new registry.Registry();
 
 	export let dir: boolean = false;
 

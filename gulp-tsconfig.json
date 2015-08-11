@@ -11,8 +11,8 @@
     "files": [
         "src/ho/flux/callbackholder.ts",
         "src/ho/flux/state.ts",
+        "src/ho/flux/registry/registry.ts",
         "src/ho/flux/stateprovider/stateprovider.ts",
-        "src/ho/flux/storeregistry.ts",
         "src/ho/flux/store.ts",
         "src/ho/flux/router.ts",
         "src/ho/flux/dispatcher.ts",

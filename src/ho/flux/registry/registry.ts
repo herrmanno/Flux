@@ -1,8 +1,10 @@
 
-module ho.flux {
+module ho.flux.registry {
 	import Promise = ho.promise.Promise;
 
-	export class Storeregistry {
+	export let mapping: {[key:string]:string} = {};
+
+	export class Registry {
 
 		private stores: {[key: string]: Store<any>} = {};
 
@@ -36,6 +38,7 @@ module ho.flux {
 
             return this.storeLoader.load({
                 name,
+				url: mapping[name],
                 super: ["ho.flux.Store"]
             })
             .then((classes: Array<typeof Store>) => {

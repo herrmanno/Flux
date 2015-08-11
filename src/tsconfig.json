@@ -25,12 +25,11 @@
         "./ho/flux/callbackholder.ts",
         "./ho/flux/dispatcher.ts",
         "./ho/flux/flux.ts",
+        "./ho/flux/registry/registry.ts",
         "./ho/flux/router.ts",
         "./ho/flux/state.ts",
         "./ho/flux/stateprovider/stateprovider.ts",
         "./ho/flux/store.ts",
-        "./ho/flux/storeprovider.ts",
-        "./ho/flux/storeregistry.ts",
         "./typings.d.ts"
     ]
 }
