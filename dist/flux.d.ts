@@ -86,6 +86,8 @@ declare module ho.flux {
 }
 declare module ho.flux {
     class Store<T> extends CallbackHolder {
+        static handlerMap: any;
+        static on: (type: any) => (target: any, key: any, desc: any) => any;
         protected data: T;
         private id;
         private handlers;

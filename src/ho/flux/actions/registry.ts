@@ -40,7 +40,7 @@ module ho.flux.actions {
             return this.actionLoader.load({
                 name,
 				url: mapping[name],
-                super: ["ho.flux.action.Action"]
+                super: ["ho.flux.actions.Action"]
             })
             .then((classes: Array<typeof Action>) => {
                 classes.map(a => {

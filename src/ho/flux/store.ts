@@ -3,6 +3,16 @@ module ho.flux {
 
 	export class Store<T> extends CallbackHolder {
 
+		static handlerMap: any = {};
+		static on = function(type) {
+			return function(target, key, desc) {
+				Store.handlerMap[target] = Store.handlerMap[target] || {};
+				Store.handlerMap[target][type] = Store.handlerMap[target][type] || [];
+				Store.handlerMap[target][type].push(key)
+				return desc;
+			}
+		}
+
 		protected data: T;
 		private id: string;
 		private handlers: {[key: string]: Function} = {};
@@ -11,6 +21,16 @@ module ho.flux {
 		constructor() {
 			super();
 			this.id = ho.flux.DISPATCHER.register(this.handle.bind(this));
+
+			let self = this;
+			let handlers = Store.handlerMap[this.constructor.prototype];
+			for(var type in handlers) {
+				let methodKeys = handlers[type];
+				methodKeys.forEach(key => {
+					let method = self[key].bind(self);
+					self.on(type, method);
+				})
+			}
 			//ho.flux.STORES.register(this);
 		}
 
