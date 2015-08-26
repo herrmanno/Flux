@@ -41,7 +41,7 @@ module ho.flux.registry {
             return this.storeLoader.load({
                 name,
 				url: mapping[name],
-                super: ["ho.flux.Store"]
+                super: ["ho.flux.Store", "ho.flux.Router"]
             })
             .then((classes: Array<typeof Store>) => {
                 cls = classes;
