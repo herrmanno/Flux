@@ -22,6 +22,8 @@
         "!./node_modules/**/*"
     ],
     "files": [
+        "./ho/flux/actions/action.ts",
+        "./ho/flux/actions/registry.ts",
         "./ho/flux/callbackholder.ts",
         "./ho/flux/dispatcher.ts",
         "./ho/flux/flux.ts",

@@ -1,5 +1,5 @@
-/// <reference path="../../dist/flux.d.ts"/>
-/// <reference path="../bower_components/ho-components/dist/components.d.ts"/>
+/// <reference path="../../../dist/flux.d.ts"/>
+/// <reference path="../../bower_components/ho-components/dist/components.d.ts"/>
 
 class Loginform extends ho.components.Component {
 

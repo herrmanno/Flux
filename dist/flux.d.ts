@@ -32,8 +32,9 @@ declare module ho.flux {
     import Promise = ho.promise.Promise;
     let DISPATCHER: Dispatcher;
     let STORES: registry.Registry;
+    let ACTIONS: actions.Registry;
     let dir: boolean;
-    function run(): Promise<any, any>;
+    function run(router?: any): Promise<any, any>;
 }
 declare module ho.flux {
     import Promise = ho.promise.Promise;
@@ -88,13 +89,36 @@ declare module ho.flux {
         protected data: T;
         private id;
         private handlers;
+        protected actions: string[];
         constructor();
-        init(): any;
+        init(): ho.promise.Promise<any, any>;
         name: string;
         register(callback: (data: T) => void, self?: any): string;
         protected on(type: string, func: Function): void;
         protected handle(action: IAction): void;
         protected changed(): void;
+    }
+}
+declare module ho.flux.actions {
+    class Action {
+        name: string;
+    }
+}
+declare module ho.flux.actions {
+    import Promise = ho.promise.Promise;
+    let mapping: {
+        [key: string]: string;
+    };
+    let useDir: boolean;
+    class Registry {
+        private actions;
+        private actionLoader;
+        register(action: Action): Action;
+        get(actionClass: string): Store<any>;
+        get<T extends Action>(actionClass: {
+            new (): T;
+        }): T;
+        loadAction(name: string): Promise<Action, string>;
     }
 }
 declare module ho.flux.registry {

@@ -14,11 +14,13 @@
 
 		<script type="text/javascript">
 			ho.flux.Router = MyRouter;
-			new MyRouter();
+			//new MyRouter();
 			ho.components.register(App);
 			ho.components.run()
 			//.then(ho.flux.STORES.get(MyRouter).init());
-			.then(ho.flux.run);
+			.then(function() {
+				ho.flux.run(MyRouter);
+			});
 		</script>
 	</body>
 </html>

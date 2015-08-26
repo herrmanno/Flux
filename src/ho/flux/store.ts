@@ -6,16 +6,19 @@ module ho.flux {
 		protected data: T;
 		private id: string;
 		private handlers: {[key: string]: Function} = {};
-
+		protected actions: string[] = [];
 
 		constructor() {
 			super();
 			this.id = ho.flux.DISPATCHER.register(this.handle.bind(this));
-			//ho.flux.STORES[this.name] = this;
-			ho.flux.STORES.register(this);
+			//ho.flux.STORES.register(this);
 		}
 
-		public init(): any {}
+		public init(): ho.promise.Promise<any, any> {
+			return ho.promise.Promise.all(this.actions.map(a=>{
+				return ho.flux.ACTIONS.loadAction(a);
+			}));
+		}
 
 		 get name(): string {
 			return this.constructor.toString().match(/\w+/g)[1];

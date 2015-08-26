@@ -8,13 +8,25 @@ module ho.flux {
 
 	export let STORES: registry.Registry = new registry.Registry();
 
+	export let ACTIONS: actions.Registry = new actions.Registry();
+
 	export let dir: boolean = false;
 
-	//if(ho.flux.STORES.get(Router) === undefined)
-	//	new Router();
 
-	export function run(): Promise<any, any> {
-		//return (<Router>ho.flux.STORES['Router']).init();
-		return STORES.get(Router).init();
+	export function run(router:any = Router): Promise<any, any> {
+		return new Promise<any, any>((resolve, reject) => {
+			if(router === Router)
+				resolve(new Router());
+			else if(typeof router === 'function')
+				resolve(new router())
+			else if(typeof router === 'string') {
+				STORES.loadStore(router)
+				.then(s => resolve(s))
+			}
+		})
+		.then(r => {
+			return STORES.register(r).init();
+		});
+
 	}
 }
