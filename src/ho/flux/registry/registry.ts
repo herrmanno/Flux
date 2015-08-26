@@ -30,7 +30,7 @@ module ho.flux.registry {
 			return <T>this.stores[name];
 		}
 
-		public loadStore(name: string): Promise<Store<any>, string> {
+		public loadStore(name: string, init = true): Promise<Store<any>, string> {
 
 			let self = this;
 			let cls: Array<typeof Store> = [];
@@ -50,7 +50,10 @@ module ho.flux.registry {
 				});
 
 				let promises =  classes.map(c => {
-					return Promise.create(self.register(new c).init());
+					let result: any = self.register(new c);
+					if(init)
+						result = result.init();
+					return Promise.create(result);
                 });
 
                 return Promise.all(promises);

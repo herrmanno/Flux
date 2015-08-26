@@ -135,7 +135,7 @@ declare module ho.flux.registry {
         get<T extends Store<any>>(storeClass: {
             new (): T;
         }): T;
-        loadStore(name: string): Promise<Store<any>, string>;
+        loadStore(name: string, init?: boolean): Promise<Store<any>, string>;
     }
 }
 declare module ho.flux.stateprovider {

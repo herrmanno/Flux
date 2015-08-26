@@ -15,7 +15,9 @@ module ho.flux {
 
 	export function run(router:any = Router): Promise<any, any> {
 		return new Promise<any, any>((resolve, reject) => {
-			if(router === Router)
+			if(!!STORES.get(router))
+				resolve(STORES.get(router))
+			else if(router === Router)
 				resolve(new Router());
 			else if(typeof router === 'function')
 				resolve(new router())
