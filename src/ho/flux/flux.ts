@@ -13,6 +13,7 @@ module ho.flux {
 	export let dir: boolean = false;
 
 
+	/*
 	export function run(router:any = Router): Promise<any, any> {
 		return new Promise<any, any>((resolve, reject) => {
 			if(!!STORES.get(router))
@@ -31,4 +32,5 @@ module ho.flux {
 		});
 
 	}
+	*/
 }

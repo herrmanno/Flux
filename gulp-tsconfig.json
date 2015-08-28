@@ -14,9 +14,9 @@
         "src/ho/flux/actions/action.ts",
         "src/ho/flux/actions/registry.ts",
         "src/ho/flux/registry/registry.ts",
-        "src/ho/flux/stateprovider/stateprovider.ts",
+
         "src/ho/flux/store.ts",
-        "src/ho/flux/router.ts",
+        
         "src/ho/flux/dispatcher.ts",
         "src/ho/flux/flux.ts"
     ]
