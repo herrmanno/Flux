@@ -6,6 +6,7 @@ module ho.flux {
 		static handlerMap: any = {};
 		static on = function(type) {
 			return function(target, key, desc) {
+				target = target.name;
 				Store.handlerMap[target] = Store.handlerMap[target] || {};
 				Store.handlerMap[target][type] = Store.handlerMap[target][type] || [];
 				Store.handlerMap[target][type].push(key)
@@ -14,7 +15,7 @@ module ho.flux {
 		}
 
 		protected data: T;
-		private id: string;
+		public id: string;
 		private handlers: {[key: string]: Function} = {};
 		protected actions: string[] = [];
 
@@ -23,7 +24,7 @@ module ho.flux {
 			this.id = ho.flux.DISPATCHER.register(this.handle.bind(this));
 
 			let self = this;
-			let handlers = Store.handlerMap[this.constructor.prototype];
+			let handlers = Store.handlerMap[this.name];
 			for(var type in handlers) {
 				let methodKeys = handlers[type];
 				methodKeys.forEach(key => {

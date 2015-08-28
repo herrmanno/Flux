@@ -87,7 +87,7 @@ declare module ho.flux {
         static handlerMap: any;
         static on: (type: any) => (target: any, key: any, desc: any) => any;
         protected data: T;
-        private id;
+        id: string;
         private handlers;
         protected actions: string[];
         constructor();
